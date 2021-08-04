@@ -1,0 +1,31 @@
+version: '2'
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+  etcd:
+    image: 'bitnami/etcd:latest'
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
+    ports:
+      - 2379:2379
+      - 2380:2380
+    networks:
+      - app-tier
+  myapp:
+    image: minio/minio
+    command: minio gateway azure --console-address ":9001"
+    environment:
+      - MINIO_ETCD_ENDPOINTS=http://etcd:2379
+      - AZURE_STORAGE_ACCOUNT=XXXXXXXXXXXXXXX
+      - AZURE_STORAGE_KEY=XXXXXXXXXXXXXXXXXXXXXX
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    ports:
+      - 9000:9000
+      - 9001:9001
+    networks:
+      - app-tier

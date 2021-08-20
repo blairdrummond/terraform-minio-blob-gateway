@@ -67,8 +67,8 @@ Then the `iam_policies.tf` code compiles this information to determine a single 
 }
 ```
 
-![Azure](azure.png)
-![MinIO](minio.png)
+![Azure](docs/azure.png)
+![MinIO](docs/minio.png)
 
 
 ## This requires the MinIO Terraform provider
@@ -89,4 +89,4 @@ vault write minio/roles/fdi-blair \
 
 At which point you can use `vault` to get credentials dynamically
 
-![Vault](vault.png)
+![Vault](docs/vault.png)

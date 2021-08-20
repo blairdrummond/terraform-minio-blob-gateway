@@ -1,3 +1,26 @@
+# Take
+#
+#   {
+#     "cropimaging": {
+#       "readers": ["blair", "jim"]
+#       "writers": ["blair"]
+#     },
+#     "frontiercounts": {
+#       "readers": ["jim"]
+#     }
+#   }
+#
+# and turn it into
+#
+#   {
+#     "blair": merge(cropimaging.reader, cropimaging.writer),
+#     "jim": merge(cropimaging.reader, frontiercounts.reader)
+#   }
+#
+# I.e. "transpose" the datasets with the users and merge
+# all the users permissions into a single policy
+
+
 locals {
   reader_policies = transpose({
     for k, v in module.dataset : k => v.kubeflow_readers

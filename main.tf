@@ -23,17 +23,6 @@ terraform {
       source = "hashicorp/aws"
       version = "3.55.0"
     }
-
-    #kubernetes = {
-    #  source = "hashicorp/kubernetes"
-    #  version = ">= 2.3.2"
-    #}
-
-    #helm = {
-    #  source = "hashicorp/helm"
-    #  version = ">= 2.2.0"
-    #}
-
   }
 
   required_version = ">= 0.14.9"
@@ -99,18 +88,3 @@ provider "minio" {
   minio_secret_key = var.minio_secret_key
 }
 
-# provider "helm" {
-#   kubernetes {
-#     # Use a LOCAL kubeconfig
-#     config_path = ".kube/config"
-#   }
-# }
-#
-# # Assume the `fdi-gateway` namespace has already been created for you
-# resource "helm_release" "etcd" {
-#   name       = "etcd"
-#   namespace = "fdi-gateway"
-#
-#   repository = "https://charts.bitnami.com/bitnami"
-#   chart      = "etcd"
-# }

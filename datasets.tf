@@ -8,7 +8,6 @@
 ###
 
 
-
 module "dataset" {
 
   for_each = {
@@ -57,20 +56,3 @@ output "policies" {
     }
   }
 }
-
-
-#module "iam_policy" {
-#  depends_on = [module.dataset]
-#}
-#
-#
-#
-#output "vpc_ids" {
-#  value = {
-#    for k, v in module.dataset : k => v.id
-#  }
-#
-#  # The VPCs aren't fully functional until their
-#  # internet gateways are running.
-#  depends_on = [aws_internet_gateway.example]
-#}

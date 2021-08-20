@@ -11,17 +11,6 @@ resource "azurerm_storage_container" "container" {
   }
 }
 
-# # Think we need to look at this
-# # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment
-# # AD Reader Role
-# resource "azurerm_role_assignment" "data-reader-role" {
-#   scope                = azurerm_storage_container.container.resource_manager_id
-#   role_definition_name = "Storage Blob Reader"
-#   principal_id         = "xxxx"
-# }
-
-
-
 
 # Reader Policy
 data "minio_iam_policy_document" "reader_policy_doc" {

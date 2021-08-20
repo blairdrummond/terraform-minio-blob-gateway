@@ -8,24 +8,69 @@
 ###
 
 
-module "cropimaging" {
+
+module "dataset" {
+
+  for_each = {
+    cropimaging = {
+
+      kubeflow_readers = ["blair", "jim"]
+      kubeflow_writers = ["blair"]
+
+      division = "DScD"
+      use_case = "crop imaging"
+      contact_email = "blair.drummond@canada.ca"
+      cct_score = 0
+    }
+    frontiercounts = {
+
+      kubeflow_readers = ["jim"]
+      kubeflow_writers = []
+
+      division = "CCTTS"
+      use_case = "fc"
+      contact_email = "blair.drummond@canada.ca"
+      cct_score = 5
+    }
+  }
+
   # Boilerplate
   source = "./fdi_dataset"
   storage_account = azurerm_storage_account.datalake.name
 
-  # Actual Configuration
-  kubeflow_readers = [minio_iam_user.profile_crop_imaging.name]
-  kubeflow_writers = [minio_iam_user.profile_crop_imaging.name]
-  dataset_name = "crop-imaging"
-  division = "DScD"
-  use_case = "crop imaging"
-  contact_email = "blair.drummond@canada.ca"
-  cct_score = 0
+  kubeflow_readers = each.value.kubeflow_readers
+  kubeflow_writers = each.value.kubeflow_writers
 
-  #required_providers {
-  #  minio = {
-  #    source = "aminueza/minio"
-  #    version = ">= 1.0.0"
-  #  }
-  #}
+  # Actual Configuration
+  dataset_name = each.key
+  division = each.value.division
+  use_case = each.value.use_case
+  contact_email = each.value.contact_email
+  cct_score = each.value.cct_score
 }
+
+output "policies" {
+  value = {
+    for k, v in module.dataset : k => {
+      reader = v.reader
+      writer = v.writer
+    }
+  }
+}
+
+
+#module "iam_policy" {
+#  depends_on = [module.dataset]
+#}
+#
+#
+#
+#output "vpc_ids" {
+#  value = {
+#    for k, v in module.dataset : k => v.id
+#  }
+#
+#  # The VPCs aren't fully functional until their
+#  # internet gateways are running.
+#  depends_on = [aws_internet_gateway.example]
+#}

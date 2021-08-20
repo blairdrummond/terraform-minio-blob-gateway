@@ -22,28 +22,6 @@ resource "azurerm_storage_container" "container" {
 
 
 
-# The FDI team should look at this:
-# https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/storage_management_policy
-
-resource "minio_iam_group" "readers_group" {
-  name = "${var.dataset_name}-readers"
-}
-
-resource "minio_iam_group" "writers_group" {
-  name = "${var.dataset_name}-writers"
-}
-
-resource "minio_iam_group_membership" "readers_membership" {
-  name = "${var.dataset_name}-readers"
-  users = var.kubeflow_readers
-  group = minio_iam_group.readers_group.name
-}
-
-resource "minio_iam_group_membership" "writers_membership" {
-  name = "${var.dataset_name}-writers"
-  users = var.kubeflow_writers
-  group = minio_iam_group.writers_group.name
-}
 
 # Reader Policy
 data "minio_iam_policy_document" "reader_policy_doc" {
@@ -60,14 +38,7 @@ data "minio_iam_policy_document" "reader_policy_doc" {
     ]
   }
 }
-resource "minio_iam_policy" "reader_policy" {
-  name   = "${var.dataset_name}-reader-policy"
-  policy = data.minio_iam_policy_document.reader_policy_doc.json
-}
-resource "minio_iam_group_policy_attachment" "reader_group_policy" {
-    policy_name = minio_iam_policy.reader_policy.name
-    group_name = minio_iam_group.readers_group.name
-}
+
 
 # Writer Policy
 data "minio_iam_policy_document" "writer_policy_doc" {
@@ -84,11 +55,19 @@ data "minio_iam_policy_document" "writer_policy_doc" {
     ]
   }
 }
-resource "minio_iam_policy" "writer_policy" {
-  name   = "${var.dataset_name}-writer-policy"
-  policy = data.minio_iam_policy_document.writer_policy_doc.json
+
+output "reader" {
+  value = data.minio_iam_policy_document.reader_policy_doc
 }
-resource "minio_iam_group_policy_attachment" "writer_group_policy" {
-    policy_name = minio_iam_policy.writer_policy.name
-    group_name = minio_iam_group.writers_group.name
+
+output "writer" {
+  value = data.minio_iam_policy_document.writer_policy_doc
+}
+
+output "kubeflow_readers" {
+  value = var.kubeflow_readers
+}
+
+output "kubeflow_writers" {
+  value = var.kubeflow_writers
 }

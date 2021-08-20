@@ -19,6 +19,11 @@ terraform {
       version = ">= 1.0.0"
     }
 
+    aws = {
+      source = "hashicorp/aws"
+      version = "3.55.0"
+    }
+
     #kubernetes = {
     #  source = "hashicorp/kubernetes"
     #  version = ">= 2.3.2"
@@ -34,6 +39,12 @@ terraform {
   required_version = ">= 0.14.9"
 }
 
+# We are not actually connecting to AWS
+# We're just using a helper function for
+# managing IAM policies
+provider "aws" {
+  region = "us-east-1"
+}
 
 ###
 ###       .o.
@@ -50,12 +61,12 @@ provider "azurerm" {
 }
 
 resource "azurerm_resource_group" "rg" {
-  name     = "fdidatalake"
+  name     = "fdidatalakeblob"
   location = "canadacentral"
 }
 
 resource "azurerm_storage_account" "datalake" {
-  name                     = "blairfakefdi"
+  name                     = "blairlakeblob"
   resource_group_name      = azurerm_resource_group.rg.name
   location                 = azurerm_resource_group.rg.location
   account_tier             = "Standard"

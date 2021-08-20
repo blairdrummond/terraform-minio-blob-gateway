@@ -47,3 +47,14 @@ port-forward:
 	kubectl --kubeconfig=.kind/config \
 		port-forward -n $(NAMESPACE) \
 		svc/minio 9000:9000
+
+cropimaging frontiercounts:
+	mc mb -p minio-local/$@
+	echo $@-file | mc pipe minio-local/$@/$@-file.txt
+
+blair jim:
+	mc admin user add minio-local $@ minioadmin
+	mc admin policy set minio-local $@ user=$@
+
+fake-users:
+	mc config host add minio-local http://localhost:9000 minioadmin minioadmin

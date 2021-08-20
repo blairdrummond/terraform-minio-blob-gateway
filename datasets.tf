@@ -7,33 +7,10 @@
 ###   8888888P  `88888P8   dP   `88888P8 `88888P' `88888P'   dP   `88888P'
 ###
 
-
 module "dataset" {
 
-  for_each = {
-    cropimaging = {
+  for_each = var.datasets
 
-      kubeflow_readers = ["blair", "jim"]
-      kubeflow_writers = ["blair"]
-
-      division = "DScD"
-      use_case = "crop imaging"
-      contact_email = "blair.drummond@canada.ca"
-      cct_score = 0
-    }
-    frontiercounts = {
-
-      kubeflow_readers = ["jim"]
-      kubeflow_writers = []
-
-      division = "CCTTS"
-      use_case = "fc"
-      contact_email = "blair.drummond@canada.ca"
-      cct_score = 5
-    }
-  }
-
-  # Boilerplate
   source = "./fdi_dataset"
   storage_account = azurerm_storage_account.datalake.name
 

@@ -1,6 +1,4 @@
 # Configure the Azure provider
-
-# Configure the Azure provider
 terraform {
   required_providers {
     azurerm = {
@@ -23,6 +21,11 @@ terraform {
       source = "hashicorp/aws"
       version = "3.55.0"
     }
+
+    # kubernetes = {
+    #   source = "hashicorp/kubernetes"
+    #   version = ">= 2.3.2"
+    # }
   }
 
   required_version = ">= 0.14.9"
@@ -35,41 +38,11 @@ provider "aws" {
   region = "us-east-1"
 }
 
-###
-###       .o.
-###      .888.
-###     .8"888.       oooooooo oooo  oooo  oooo d8b  .ooooo.
-###    .8' `888.     d'""7d8P  `888  `888  `888""8P d88' `88b
-###   .88ooo8888.      .d8P'    888   888   888     888ooo888
-###  .8'     `888.   .d8P'  .P  888   888   888     888    .o
-### o88o     o8888o d8888888P   `V88V"V8P' d888b    `Y8bod8P'
-###
+# provider "kubernetes" {
+#   config_path    = "~/.kube/config"
+#   config_context = "my-context"
+# }
 
-provider "azurerm" {
-  features {}
-}
-
-resource "azurerm_resource_group" "rg" {
-  name     = "fdidatalakeblob"
-  location = "canadacentral"
-}
-
-resource "azurerm_storage_account" "datalake" {
-  name                     = "blairlakeblob"
-  resource_group_name      = azurerm_resource_group.rg.name
-  location                 = azurerm_resource_group.rg.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-  # See also StorageV2
-  account_kind             = "BlobStorage"
-  # Use object versioning instead
-  is_hns_enabled           = "false"
-
-  blob_properties {
-    versioning_enabled       = "true"
-    change_feed_enabled      = "true"
-  }
-}
 
 ###
 ###  ooo        ooooo  o8o              ooooo   .oooooo.
@@ -83,7 +56,7 @@ resource "azurerm_storage_account" "datalake" {
 
 provider "minio" {
   minio_server = var.minio_server
-  minio_region = var.minio_region
+  minio_region = "us-east-1"
   minio_access_key = var.minio_access_key
   minio_secret_key = var.minio_secret_key
 }

@@ -19,6 +19,9 @@
 #
 # I.e. "transpose" the datasets with the users and merge
 # all the users permissions into a single policy
+#
+# This requires global knowledge of every dataset, so it cannot
+# be within the `fdi_dataset` module.
 
 
 locals {

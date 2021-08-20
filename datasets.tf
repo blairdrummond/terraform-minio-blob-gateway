@@ -12,7 +12,7 @@ module "dataset" {
   for_each = var.datasets
 
   source = "./fdi_dataset"
-  storage_account = azurerm_storage_account.datalake.name
+  storage_account = var.storage_account_name
 
   kubeflow_readers = each.value.kubeflow_readers
   kubeflow_writers = each.value.kubeflow_writers

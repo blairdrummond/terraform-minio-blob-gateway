@@ -7,8 +7,8 @@ gateway:
   replicaCount: 4
   auth:
     azure:
-      storageAccountName: "xxxxxxxxxxx"
-      storageAccountKey: "xxxxxxxxxxxxxxx"
+      storageAccountName: "blairlake"
+      storageAccountKey: "Ez1Dg2MimHZQZljNdVthSqGsqefdy9iEmq5LaArT71LJdBJasyTK6RgEpT7hFEAe4z3+uhlAORJqSAZoG0TXFA=="
 extraEnv:
   - name: MINIO_ETCD_ENDPOINTS
     value: http://etcd-headless:2379

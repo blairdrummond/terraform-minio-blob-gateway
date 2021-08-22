@@ -1,3 +1,5 @@
+# Moved to https://gitlab.com/happylittlecloud/terraform
+
 # Terraform Blob Storage setup for AD + MinIO IAM access control
 
 Create a blob storage system with metadata and access control, and
